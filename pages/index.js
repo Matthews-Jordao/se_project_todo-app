@@ -27,6 +27,12 @@ const generateTodo = (data) => {
   return todo.getView();
 };
 
+// Helper to generate and append a todo
+function renderTodo(todoData) {
+  const todo = generateTodo(todoData);
+  todosList.append(todo);
+}
+
 addTodoButton.addEventListener("click", () => {
   openModal(addTodoPopup);
 });
@@ -37,6 +43,12 @@ addTodoCloseBtn.addEventListener("click", () => {
 
 addTodoForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
+
+  // Guard: Only proceed if the form is valid
+  if (!addTodoForm.checkValidity()) {
+    return;
+  }
+
   const name = evt.target.name.value;
   const dateInput = evt.target.date.value;
 
@@ -44,9 +56,8 @@ addTodoForm.addEventListener("submit", (evt) => {
   const date = new Date(dateInput);
   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 
-  const values = { name, date };
-  const todo = generateTodo(values);
-  todosList.append(todo);
+  const newTodoData = { name, date };
+  renderTodo(newTodoData);
   closeModal(addTodoPopup);
 
   // Reset validation and form controls after successful submission
