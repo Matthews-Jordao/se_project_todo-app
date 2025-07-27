@@ -24,4 +24,4 @@ A simple, modern to-do list application that helps you keep track of your daily 
 
 This project is deployed on GitHub Pages:
 
-- [ADD LINK HERE](#)
+https://matthews-jordao.github.io/se_project_todo-app/
