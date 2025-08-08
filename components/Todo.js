@@ -1,30 +1,31 @@
+
 class Todo {
+  // Create a new todo item instance
   constructor(data, selector) {
-    this._data = data;
-    this._selector = selector;
-    this._templateElement = document.querySelector(selector);
-    this._todoElement = null;
+    this._data = data; // The todo data object
+    this._selector = selector; // The template selector string
+    this._templateElement = document.querySelector(selector); // The template element
+    this._todoElement = null; // Will hold the generated todo DOM element
   }
 
-  // Private method to set event listeners
+  // Set up event listeners for delete and checkbox actions
   _setEventListeners() {
     const deleteBtn = this._todoElement.querySelector(".todo__delete-btn");
     const checkbox = this._todoElement.querySelector(".todo__completed");
 
-    // Delete button removes the todo element
+    // Remove the todo from the DOM when delete button is clicked
     deleteBtn.addEventListener("click", () => {
       this._todoElement.remove();
     });
 
-    // Checkbox toggles completed status (UI only)
+    // Update the completed status when the checkbox is toggled
     checkbox.addEventListener("change", () => {
       this._data.completed = checkbox.checked;
-      // Optionally, you could add a class to visually indicate completion
-      // this._todoElement.classList.toggle("todo_completed", checkbox.checked);
+      // You could also visually indicate completion here if desired
     });
   }
 
-  // Public method to generate and return the todo element
+  // Generate the todo DOM element from the template and fill in data
   getView() {
     this._todoElement = this._templateElement.content
       .querySelector(".todo")
@@ -35,18 +36,18 @@ class Todo {
     const todoLabel = this._todoElement.querySelector(".todo__label");
     const todoDate = this._todoElement.querySelector(".todo__date");
 
-    // Set name
+    // Set the todo name
     todoNameEl.textContent = this._data.name;
 
-    // Set completed status
+    // Set the checkbox to reflect completed status
     todoCheckboxEl.checked = !!this._data.completed;
 
-    // Set id and for attributes (handle undefined id for new todos)
+    // Assign unique id and label for accessibility
     const todoId = this._data.id || crypto.randomUUID();
     todoCheckboxEl.id = `todo-${todoId}`;
     todoLabel.setAttribute("for", `todo-${todoId}`);
 
-    // Set due date if present and valid
+    // Show due date if present and valid
     if (this._data.date) {
       const dueDate = new Date(this._data.date);
       if (!isNaN(dueDate)) {
@@ -62,7 +63,7 @@ class Todo {
       todoDate.textContent = "";
     }
 
-    // Set up event listeners
+    // Attach event listeners for this todo
     this._setEventListeners();
 
     return this._todoElement;
