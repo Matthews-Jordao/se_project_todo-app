@@ -11,7 +11,7 @@ const addTodoButton = document.querySelector(".button_action_add");
 // Instantiate TodoCounter
 const todoCounter = new TodoCounter(initialTodos, '.counter__text');
 
-// Helper to generate a todo element and attach counter logic
+// Helper to generate a todo element
 function generateTodo(data) {
   // Validate required fields
   if (!data || typeof data.name !== 'string' || data.name.trim() === '') {
@@ -22,29 +22,9 @@ function generateTodo(data) {
     data.id = uuidv4();
   }
   const todo = new Todo(data, "#todo-template");
-  const todoElement = todo.getView();
-  attachTodoCounterHandlers(todoElement, data.completed);
-  return todoElement;
+  return todo.getView();
 }
 
-// Attach counter logic to a todo's checkbox and delete button
-function attachTodoCounterHandlers(todoElement, isCompleted) {
-  const checkbox = todoElement.querySelector('.todo__completed');
-  const deleteBtn = todoElement.querySelector('.todo__delete-btn');
-
-  // Checkbox toggles completed count
-  checkbox.addEventListener('change', (evt) => {
-    todoCounter.updateCompleted(evt.target.checked);
-  });
-
-  // Delete button updates total and completed count if needed
-  deleteBtn.addEventListener('click', () => {
-    todoCounter.updateTotal(false);
-    if (checkbox.checked) {
-      todoCounter.updateCompleted(false);
-    }
-  });
-}
 
 // Instantiate Section for rendering todos
 const section = new Section({
@@ -63,7 +43,7 @@ function renderTodo(todoData) {
 }
 
 // Set up form validator before popup so it's always defined
-const form = document.querySelector('#add-todo-popup .popup__form');
+const form = document.forms["add-todo-form"];
 const formValidator = new FormValidator(validationConfig, form);
 formValidator.enableValidation();
 

@@ -2,6 +2,10 @@ import Popup from "./Popup.js";
 
 
 class PopupWithForm extends Popup {
+  // Return the cached form element
+  getForm() {
+    return this._form;
+  }
   // Set up the popup with a form and a submit handler
   constructor(popupSelector, handleFormSubmit) {
     super(popupSelector);
@@ -25,13 +29,14 @@ class PopupWithForm extends Popup {
     this._form.addEventListener("submit", (evt) => {
       evt.preventDefault();
       this._handleFormSubmit(this._getInputValues());
+      this._form.reset(); // Reset only after successful submission
     });
   }
 
   // Close the popup and reset the form fields
   close() {
-    super.close();
-    this._form.reset();
+  super.close();
+  // Do not reset the form here; only reset after successful submission
   }
 }
 
