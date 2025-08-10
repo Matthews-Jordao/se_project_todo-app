@@ -21,7 +21,19 @@ function generateTodo(data) {
   if (!data.id) {
     data.id = uuidv4();
   }
-  const todo = new Todo(data, "#todo-template");
+  const todo = new Todo(data, "#todo-template", {
+    onDelete: (todoData) => {
+      todoCounter.updateTotal(false);
+      if (todoData.completed) todoCounter.updateCompleted(false);
+    },
+    onToggle: (todoData, wasCompleted) => {
+      if (todoData.completed && !wasCompleted) {
+        todoCounter.updateCompleted(true);
+      } else if (!todoData.completed && wasCompleted) {
+        todoCounter.updateCompleted(false);
+      }
+    }
+  });
   return todo.getView();
 }
 
@@ -39,6 +51,7 @@ function renderTodo(todoData) {
   if (todoElement) {
     section.addItem(todoElement);
     todoCounter.updateTotal(true);
+    if (todoData.completed) todoCounter.updateCompleted(true);
   }
 }
 

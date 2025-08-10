@@ -11,12 +11,14 @@ class TodoCounter {
   // Update the completed count (call when a todo is checked/unchecked or a completed todo is deleted)
   updateCompleted = (increment) => {
     this._completed += increment ? 1 : -1;
+    if (this._completed < 0) this._completed = 0;
     this._updateText();
   };
 
   // Update the total count (call when a todo is added or deleted)
   updateTotal = (increment) => {
     this._total += increment ? 1 : -1;
+    if (this._total < 0) this._total = 0;
     this._updateText();
   };
 

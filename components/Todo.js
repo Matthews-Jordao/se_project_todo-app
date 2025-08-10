@@ -1,11 +1,13 @@
 
 class Todo {
   // Create a new todo item instance
-  constructor(data, selector) {
+  constructor(data, selector, { onDelete, onToggle }) {
     this._data = data; // The todo data object
     this._selector = selector; // The template selector string
     this._templateElement = document.querySelector(selector); // The template element
     this._todoElement = null; // Will hold the generated todo DOM element
+    this._onDelete = onDelete;
+    this._onToggle = onToggle;
   }
 
   // Set up event listeners for delete and checkbox actions
@@ -16,12 +18,18 @@ class Todo {
     // Remove the todo from the DOM when delete button is clicked
     deleteBtn.addEventListener("click", () => {
       this._todoElement.remove();
+      if (typeof this._onDelete === 'function') {
+        this._onDelete(this._data);
+      }
     });
 
     // Update the completed status when the checkbox is toggled
     checkbox.addEventListener("change", () => {
+      const wasCompleted = this._data.completed;
       this._data.completed = checkbox.checked;
-      // You could also visually indicate completion here if desired
+      if (typeof this._onToggle === 'function') {
+        this._onToggle(this._data, wasCompleted);
+      }
     });
   }
 

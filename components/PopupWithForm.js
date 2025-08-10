@@ -33,11 +33,7 @@ class PopupWithForm extends Popup {
     });
   }
 
-  // Close the popup and reset the form fields
-  close() {
-  super.close();
-  // Do not reset the form here; only reset after successful submission
-  }
+  // No need to override close() if not changing parent behavior
 }
 
 export default PopupWithForm;
